@@ -1,0 +1,17 @@
+.character-item {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.character-item__img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.character-item__decription {
+  width: 200px;
+}
