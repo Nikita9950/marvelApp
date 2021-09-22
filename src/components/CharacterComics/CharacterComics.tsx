@@ -46,7 +46,6 @@ class CharacterComics extends React.Component<RouteComponentProps, ICharacterCom
             return <ComicsItem key={item.name} comicsName={item.name} />;
           })}
         </ul>
-        <ComicsItem />
       </>
     );
   }
