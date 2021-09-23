@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../Header/Header';
 import { getCharacter } from '../../Api/Api';
-import CharactersList from '../CharacterList/CharacterList';
+import CharacterList from '../CharacterList/CharacterList';
 import { RouteComponentProps } from 'react-router';
 
 export interface ICharacter {
@@ -95,7 +95,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
           name="nameCharacter"
         />
         <button onClick={this.search}>Search</button>
-        <CharactersList items={this.state.items} />
+        <CharacterList items={this.state.items} />
       </>
     );
   }
