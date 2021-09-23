@@ -31,7 +31,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
 
   componentDidMount(): void {
     const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
-    if (characterQueryName !== null && characterQueryName !== '') {
+    if (characterQueryName) {
       getCharacter(`nameStartsWith=${characterQueryName}`).then((res) => {
         this.setState({
           items: res.data.data.results,
@@ -39,7 +39,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
         });
       });
     } else {
-      getCharacter('limit=5').then((res) => {
+      getCharacter('limit=10').then((res) => {
         this.setState({
           items: res.data.data.results,
         });
@@ -50,7 +50,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
   componentDidUpdate(prevProps: RouteComponentProps): void {
     if (this.props.location !== prevProps.location) {
       const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
-      if (characterQueryName !== null && characterQueryName !== '') {
+      if (characterQueryName) {
         getCharacter(`limit=5&nameStartsWith=${characterQueryName}`).then((res) => {
           this.setState({
             items: res.data.data.results,
