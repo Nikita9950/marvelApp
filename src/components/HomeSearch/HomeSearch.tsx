@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
-import { getCharacter } from '../../Api/Api';
+import { getCharacter } from '../../api/api';
 import CharacterList from '../CharacterList/CharacterList';
 import { RouteComponentProps } from 'react-router';
 
