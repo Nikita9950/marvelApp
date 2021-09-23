@@ -20,4 +20,3 @@ export async function getCharacter(params = ''): Promise<AxiosResponse> {
 export function getCharacterById(characterId: string): Promise<AxiosResponse> {
   return getResourse(`characters/${characterId}?`);
 }
-
