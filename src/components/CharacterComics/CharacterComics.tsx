@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCharacterById } from '../../api/api';
+import { getCharacterById } from '../../Api/Api';
 import ComicsItem from '../ComicsItem/ComicsItem';
 import { RouteComponentProps } from 'react-router';
 import { IComicsItem } from '../ComicsItem/ComicsItem';
