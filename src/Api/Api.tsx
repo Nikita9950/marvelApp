@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 
+const { REACT_APP_API_KEY, REACT_APP_API_HASH } = process.env;
 const apiBase = 'http://gateway.marvel.com/v1/public/';
-const API_KEY = '029dd13ae8db86f3768cc0b0a8b3910f';
-const API_HASH = 'e63cb8b1de53db2940e0c5a7e77c10c6';
 
 export async function getResourse(params: string): Promise<AxiosResponse> {
-  const res = await axios.get(`${apiBase}${params}ts=1&apikey=${API_KEY}&hash=${API_HASH}`);
+  const res = await axios.get(
+    `${apiBase}${params}ts=1&apikey=${REACT_APP_API_KEY}&hash=${REACT_APP_API_HASH}`
+  );
   try {
     return res;
   } catch (error) {
