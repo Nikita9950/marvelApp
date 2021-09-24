@@ -1,0 +1,15 @@
+.comics-item {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.comics-item__decription {
+  width: 600px;
+}
+
+.comics-item__image {
+  height: 300px;
+}

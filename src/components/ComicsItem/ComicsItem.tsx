@@ -1,16 +1,21 @@
 import React from 'react';
+import './ComicsItem.css';
 
-export interface IComicsItem {
-  name: string;
+export interface IProps {
+  title: string;
+  description: string;
+  images: string;
 }
 
-function ComicsItem(props: any): JSX.Element {
-  const { comicsName } = props;
+export function ComicsItem(props: IProps): JSX.Element {
+  const { title, images, description } = props;
   return (
-    <li>
-      <p>{comicsName}</p>
+    <li className="comics-item">
+      <img className="comics-item__image" src={images} />
+      <div className="comics-item__decription">
+        <p>{title}</p>
+        <p>{description}</p>
+      </div>
     </li>
   );
 }
-
-export default ComicsItem;

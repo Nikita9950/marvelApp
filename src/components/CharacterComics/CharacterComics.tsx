@@ -1,49 +1,66 @@
 import React from 'react';
-import { getCharacterById } from '../../Api/Api';
-import ComicsItem from '../ComicsItem/ComicsItem';
+import { getComicsByCharacter } from '../../api/api';
 import { RouteComponentProps } from 'react-router';
-import { IComicsItem } from '../ComicsItem/ComicsItem';
+import { ComicsItem } from '../ComicsItem/ComicsItem';
+
+export interface IComics {
+  title: string;
+  id: string;
+  description: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+}
 
 interface ICharacterComicsState {
   characterId: string;
-  characterComics: Array<IComicsItem>;
-  characterName: string;
+  comics: Array<IComics>;
 }
 
-interface IRouteParams {
+interface MatchParams {
   characterId: string;
 }
 
-class CharacterComics extends React.Component<RouteComponentProps, ICharacterComicsState> {
-  constructor(props: RouteComponentProps<IRouteParams>) {
+class CharacterComics extends React.Component<
+  RouteComponentProps<MatchParams>,
+  ICharacterComicsState
+> {
+  constructor(props: RouteComponentProps<MatchParams>) {
     super(props);
     this.state = {
       characterId: props.match.params.characterId,
-      characterComics: [],
-      characterName: '',
+      comics: [],
     };
   }
 
   componentDidMount(): void {
-    getCharacterById(this.state.characterId).then((res) => {
+    getComicsByCharacter(this.state.characterId).then((res) => {
       this.setState({
-        characterComics: res.data.data.results[0].comics.items,
-        characterName: res.data.data.results[0].name,
+        comics: res.data.data.results,
       });
     });
   }
 
   render(): JSX.Element {
-    const { characterComics, characterName } = this.state;
-    console.log(characterComics);
+    const { comics } = this.state;
 
     return (
       <>
-        <h1>{characterName}</h1>
         <div>hero comics:</div>
         <ul>
-          {characterComics.map((item: IComicsItem) => {
-            return <ComicsItem key={item.name} comicsName={item.name} />;
+          {comics.map((item: IComics) => {
+            console.log(item);
+
+            const imgSrc = `${item.thumbnail.path}.${item.thumbnail.extension}`;
+            return (
+              <ComicsItem
+                title={item.title}
+                images={imgSrc}
+                key={item.id}
+                description={item.description}
+              />
+            );
           })}
         </ul>
       </>

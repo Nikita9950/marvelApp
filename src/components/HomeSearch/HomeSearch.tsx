@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
-import { getCharacter } from '../../Api/Api';
+import { getCharacter } from '../../api/api';
 import CharacterList from '../CharacterList/CharacterList';
 import { RouteComponentProps } from 'react-router';
 
@@ -29,44 +29,33 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
     this.search = this.search.bind(this);
   }
 
-  componentDidMount(): void {
+  getChar(): void {
     const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
     if (characterQueryName) {
-      getCharacter(`nameStartsWith=${characterQueryName}`).then((res) => {
+      getCharacter(characterQueryName).then((res) => {
         this.setState({
           items: res.data.data.results,
           inputValue: characterQueryName,
         });
       });
     } else {
-      getCharacter('limit=10').then((res) => {
+      getCharacter().then((res) => {
         this.setState({
           items: res.data.data.results,
+          inputValue: '',
         });
       });
     }
   }
 
+  componentDidMount(): void {
+    this.getChar();
+  }
+
   componentDidUpdate(prevProps: RouteComponentProps): void {
     if (this.props.location !== prevProps.location) {
-      const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
-      if (characterQueryName) {
-        getCharacter(`limit=5&nameStartsWith=${characterQueryName}`).then((res) => {
-          this.setState({
-            items: res.data.data.results,
-            inputValue: characterQueryName,
-          });
-        });
-      } else {
-        getCharacter('limit=5').then((res) => {
-          this.setState({
-            items: res.data.data.results,
-            inputValue: '',
-          });
-        });
-      }
+      this.getChar();
     }
-    console.log(this.state.items);
   }
 
   setAddress(e: React.SyntheticEvent): void {

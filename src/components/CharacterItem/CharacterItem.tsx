@@ -6,7 +6,7 @@ interface IProps {
   name: string;
   imgSrc: string;
   id: string;
-}
+} 
 
 function CharacterItem(props: IProps): JSX.Element {
   const { name, imgSrc, id } = props;
