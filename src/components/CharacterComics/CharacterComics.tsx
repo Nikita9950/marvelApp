@@ -50,8 +50,6 @@ class CharacterComics extends React.Component<
         <div>hero comics:</div>
         <ul>
           {comics.map((item: IComics) => {
-            console.log(item);
-
             const imgSrc = `${item.thumbnail.path}.${item.thumbnail.extension}`;
             return (
               <ComicsItem

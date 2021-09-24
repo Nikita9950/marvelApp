@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 
 const { REACT_APP_API_KEY, REACT_APP_API_HASH } = process.env;
 const URL_BASE = 'http://gateway.marvel.com/v1/public/';
-// const key = `ts=1&apikey=${REACT_APP_API_KEY}&hash=${REACT_APP_API_HASH}`;
 
 export async function getResourse(
   url: string,
@@ -13,7 +12,7 @@ export async function getResourse(
       apikey: REACT_APP_API_KEY,
       hash: REACT_APP_API_HASH,
       ts: 1,
-      limit: 5,
+      limit: 10,
       nameStartsWith: characterQueryName,
     },
   });
