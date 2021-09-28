@@ -1,0 +1,9 @@
+.spinner {
+  height: 100vh;
+}
+
+.spinner__inner {
+  position: absolute;
+  top: 50%;
+  left: 48%;
+}

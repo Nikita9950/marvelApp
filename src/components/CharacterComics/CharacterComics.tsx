@@ -1,7 +1,10 @@
 import React from 'react';
 import { getComicsByCharacter } from '../../api/api';
 import { RouteComponentProps } from 'react-router';
-import { ComicsItem } from '../ComicsItem/ComicsItem';
+import Header from '../Header/Header';
+import Container from '@material-ui/core/Container';
+import './CharacterComics.css';
+import ComicsList from '../ComicsList/ComicsList';
 
 export interface IComics {
   title: string;
@@ -16,6 +19,7 @@ export interface IComics {
 interface ICharacterComicsState {
   characterId: string;
   comics: Array<IComics>;
+  loading: boolean;
 }
 
 interface MatchParams {
@@ -31,6 +35,7 @@ class CharacterComics extends React.Component<
     this.state = {
       characterId: props.match.params.characterId,
       comics: [],
+      loading: true,
     };
   }
 
@@ -38,30 +43,17 @@ class CharacterComics extends React.Component<
     getComicsByCharacter(this.state.characterId).then((res) => {
       this.setState({
         comics: res.data.data.results,
+        loading: false,
       });
     });
   }
 
   render(): JSX.Element {
-    const { comics } = this.state;
-
     return (
-      <>
-        <div>hero comics:</div>
-        <ul>
-          {comics.map((item: IComics) => {
-            const imgSrc = `${item.thumbnail.path}.${item.thumbnail.extension}`;
-            return (
-              <ComicsItem
-                title={item.title}
-                images={imgSrc}
-                key={item.id}
-                description={item.description}
-              />
-            );
-          })}
-        </ul>
-      </>
+      <Container className="container">
+        <Header />
+        <ComicsList loading={this.state.loading} comics={this.state.comics} />
+      </Container>
     );
   }
 }

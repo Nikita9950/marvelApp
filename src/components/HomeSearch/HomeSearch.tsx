@@ -3,6 +3,11 @@ import Header from '../Header/Header';
 import { getCharacter } from '../../api/api';
 import CharacterList from '../CharacterList/CharacterList';
 import { RouteComponentProps } from 'react-router';
+import './HomeSearch.css';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import { Spinner } from '../Spinner/Spinner';
 
 export interface ICharacter {
   id: string;
@@ -16,6 +21,7 @@ export interface ICharacter {
 interface IHomeSearchState {
   inputValue: string;
   items: Array<ICharacter>;
+  loading: boolean;
 }
 
 class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
@@ -24,6 +30,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
     this.state = {
       inputValue: '',
       items: [],
+      loading: true,
     };
     this.setAddress = this.setAddress.bind(this);
     this.search = this.search.bind(this);
@@ -36,6 +43,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
         this.setState({
           items: res.data.data.results,
           inputValue: characterQueryName,
+          loading: false,
         });
       });
     } else {
@@ -43,6 +51,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
         this.setState({
           items: res.data.data.results,
           inputValue: '',
+          loading: false,
         });
       });
     }
@@ -74,18 +83,30 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
   }
 
   render(): JSX.Element {
+    const spinner = this.state.loading ? <Spinner /> : null;
+    const content = !this.state.loading ? <CharacterList items={this.state.items} /> : null;
     return (
-      <>
+      <Container className="container">
         <Header />
-        <input
-          onChange={this.setAddress}
-          value={this.state.inputValue}
-          type="text"
-          name="nameCharacter"
-        />
-        <button onClick={this.search}>Search</button>
-        <CharacterList items={this.state.items} />
-      </>
+        <Grid container spacing={3} justifyContent="center" className="home-searh-bar">
+          <TextField
+            onChange={this.setAddress}
+            value={this.state.inputValue}
+            type="text"
+            name="nameCharacter"
+            size="small"
+            label="search a character"
+            className="text-field"
+            id="filled-basic"
+            variant="filled"
+          />
+          <button className="search-button" onClick={this.search}>
+            Search
+          </button>
+        </Grid>
+        {spinner}
+        {content}
+      </Container>
     );
   }
 }

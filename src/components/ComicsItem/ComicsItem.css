@@ -1,9 +1,5 @@
 .comics-item {
-  display: flex;
-  justify-content: space-around;
   padding: 20px 0;
-  flex-wrap: wrap;
-  align-items: center;
 }
 
 .comics-item__decription {
@@ -12,4 +8,11 @@
 
 .comics-item__image {
   height: 300px;
+  width: 200px;
+  object-fit: contain;
+}
+
+.comics-item__title {
+  font-size: 25px;
+  padding-bottom: 20px;
 }
