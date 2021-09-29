@@ -5,9 +5,8 @@ import CharacterList from '../CharacterList/CharacterList';
 import { RouteComponentProps } from 'react-router';
 import './HomeSearch.css';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import { Spinner } from '../Spinner/Spinner';
+import { SearchBar } from '../SearchBar/SearchBar';
 
 export interface ICharacter {
   id: string;
@@ -67,8 +66,8 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
     }
   }
 
-  setAddress(e: React.SyntheticEvent): void {
-    const { value } = e.target as HTMLInputElement;
+  setAddress(event: React.SyntheticEvent): void {
+    const { value } = event.target as HTMLInputElement;
     this.setState({
       inputValue: value,
     });
@@ -88,22 +87,7 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
     return (
       <Container className="container">
         <Header />
-        <Grid container spacing={3} justifyContent="center" className="home-searh-bar">
-          <TextField
-            onChange={this.setAddress}
-            value={this.state.inputValue}
-            type="text"
-            name="nameCharacter"
-            size="small"
-            label="search a character"
-            className="text-field"
-            id="filled-basic"
-            variant="filled"
-          />
-          <button className="search-button" onClick={this.search}>
-            Search
-          </button>
-        </Grid>
+        <SearchBar value={this.state.inputValue} click={this.search} onChange={this.setAddress} />
         {spinner}
         {content}
       </Container>
