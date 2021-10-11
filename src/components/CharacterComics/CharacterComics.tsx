@@ -1,52 +1,59 @@
 import React from 'react';
-import { getCharacterById } from '../../Api/Api';
-import ComicsItem from '../ComicsItem/ComicsItem';
+import { getComicsByCharacter } from '../../api/api';
 import { RouteComponentProps } from 'react-router';
-import { IComicsItem } from '../ComicsItem/ComicsItem';
+import Header from '../Header/Header';
+import Container from '@material-ui/core/Container';
+import './CharacterComics.css';
+import ComicsList from '../ComicsList/ComicsList';
+
+export interface IComics {
+  title: string;
+  id: string;
+  description: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
+}
 
 interface ICharacterComicsState {
   characterId: string;
-  characterComics: Array<IComicsItem>;
-  characterName: string;
+  comics: Array<IComics>;
+  loading: boolean;
 }
 
-interface IRouteParams {
+interface MatchParams {
   characterId: string;
 }
 
-class CharacterComics extends React.Component<RouteComponentProps, ICharacterComicsState> {
-  constructor(props: RouteComponentProps<IRouteParams>) {
+class CharacterComics extends React.Component<
+  RouteComponentProps<MatchParams>,
+  ICharacterComicsState
+> {
+  constructor(props: RouteComponentProps<MatchParams>) {
     super(props);
     this.state = {
       characterId: props.match.params.characterId,
-      characterComics: [],
-      characterName: '',
+      comics: [],
+      loading: true,
     };
   }
 
   componentDidMount(): void {
-    getCharacterById(this.state.characterId).then((res) => {
+    getComicsByCharacter(this.state.characterId).then((res) => {
       this.setState({
-        characterComics: res.data.data.results[0].comics.items,
-        characterName: res.data.data.results[0].name,
+        comics: res.data.data.results,
+        loading: false,
       });
     });
   }
 
   render(): JSX.Element {
-    const { characterComics, characterName } = this.state;
-    console.log(characterComics);
-
     return (
-      <>
-        <h1>{characterName}</h1>
-        <div>hero comics:</div>
-        <ul>
-          {characterComics.map((item: IComicsItem) => {
-            return <ComicsItem key={item.name} comicsName={item.name} />;
-          })}
-        </ul>
-      </>
+      <Container className="container">
+        <Header />
+        <ComicsList loading={this.state.loading} comics={this.state.comics} />
+      </Container>
     );
   }
 }

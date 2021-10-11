@@ -1,0 +1,18 @@
+.comics-item {
+  padding: 20px 0;
+}
+
+.comics-item__decription {
+  width: 600px;
+}
+
+.comics-item__image {
+  height: 300px;
+  width: 200px;
+  object-fit: contain;
+}
+
+.comics-item__title {
+  font-size: 25px;
+  padding-bottom: 20px;
+}

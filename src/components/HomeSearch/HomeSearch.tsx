@@ -1,8 +1,12 @@
 import React from 'react';
 import Header from '../Header/Header';
-import { getCharacter } from '../../Api/Api';
+import { getCharacter } from '../../api/api';
 import CharacterList from '../CharacterList/CharacterList';
 import { RouteComponentProps } from 'react-router';
+import './HomeSearch.css';
+import Container from '@material-ui/core/Container';
+import { Spinner } from '../Spinner/Spinner';
+import { SearchBar } from '../SearchBar/SearchBar';
 
 export interface ICharacter {
   id: string;
@@ -16,6 +20,7 @@ export interface ICharacter {
 interface IHomeSearchState {
   inputValue: string;
   items: Array<ICharacter>;
+  loading: boolean;
 }
 
 class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
@@ -24,53 +29,45 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
     this.state = {
       inputValue: '',
       items: [],
+      loading: true,
     };
     this.setAddress = this.setAddress.bind(this);
     this.search = this.search.bind(this);
   }
 
-  componentDidMount(): void {
+  getChar(): void {
     const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
-    if (characterQueryName !== null && characterQueryName !== '') {
-      getCharacter(`nameStartsWith=${characterQueryName}`).then((res) => {
+    if (characterQueryName) {
+      getCharacter(characterQueryName).then((res) => {
         this.setState({
           items: res.data.data.results,
           inputValue: characterQueryName,
+          loading: false,
         });
       });
     } else {
-      getCharacter('limit=5').then((res) => {
+      getCharacter().then((res) => {
         this.setState({
           items: res.data.data.results,
+          inputValue: '',
+          loading: false,
         });
       });
     }
+  }
+
+  componentDidMount(): void {
+    this.getChar();
   }
 
   componentDidUpdate(prevProps: RouteComponentProps): void {
     if (this.props.location !== prevProps.location) {
-      const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
-      if (characterQueryName !== null && characterQueryName !== '') {
-        getCharacter(`limit=5&nameStartsWith=${characterQueryName}`).then((res) => {
-          this.setState({
-            items: res.data.data.results,
-            inputValue: characterQueryName,
-          });
-        });
-      } else {
-        getCharacter('limit=5').then((res) => {
-          this.setState({
-            items: res.data.data.results,
-            inputValue: '',
-          });
-        });
-      }
+      this.getChar();
     }
-    console.log(this.state.items);
   }
 
-  setAddress(e: React.SyntheticEvent): void {
-    const { value } = e.target as HTMLInputElement;
+  setAddress(event: React.SyntheticEvent): void {
+    const { value } = event.target as HTMLInputElement;
     this.setState({
       inputValue: value,
     });
@@ -85,18 +82,15 @@ class Home extends React.Component<RouteComponentProps, IHomeSearchState> {
   }
 
   render(): JSX.Element {
+    const spinner = this.state.loading ? <Spinner /> : null;
+    const content = !this.state.loading ? <CharacterList items={this.state.items} /> : null;
     return (
-      <>
+      <Container className="container">
         <Header />
-        <input
-          onChange={this.setAddress}
-          value={this.state.inputValue}
-          type="text"
-          name="nameCharacter"
-        />
-        <button onClick={this.search}>Search</button>
-        <CharacterList items={this.state.items} />
-      </>
+        <SearchBar value={this.state.inputValue} click={this.search} onChange={this.setAddress} />
+        {spinner}
+        {content}
+      </Container>
     );
   }
 }
