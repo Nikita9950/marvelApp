@@ -1,0 +1,8 @@
+.сharacter-list__error {
+  font-size: 35px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
