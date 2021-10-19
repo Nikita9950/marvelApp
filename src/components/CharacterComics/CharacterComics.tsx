@@ -1,10 +1,11 @@
 import React from 'react';
-import { getComicsByCharacter } from '../../api/api';
-import { RouteComponentProps } from 'react-router';
+// import { RouteComponentProps } from 'react-router';
 import Header from '../Header/Header';
 import Container from '@material-ui/core/Container';
 import './CharacterComics.css';
+import { connect } from 'react-redux';
 import ComicsList from '../ComicsList/ComicsList';
+import { loadComics } from '../../redux/actions/comicsActions';
 
 export interface IComics {
   title: string;
@@ -18,44 +19,38 @@ export interface IComics {
 
 interface ICharacterComicsState {
   characterId: string;
-  comics: Array<IComics>;
-  loading: boolean;
 }
 
-interface MatchParams {
-  characterId: string;
-}
 
-class CharacterComics extends React.Component<
-  RouteComponentProps<MatchParams>,
-  ICharacterComicsState
-> {
-  constructor(props: RouteComponentProps<MatchParams>) {
+class CharacterComics extends React.Component<any, ICharacterComicsState> {
+  constructor(props: any) {
     super(props);
-    this.state = {
-      characterId: props.match.params.characterId,
-      comics: [],
-      loading: true,
-    };
   }
 
   componentDidMount(): void {
-    getComicsByCharacter(this.state.characterId).then((res) => {
-      this.setState({
-        comics: res.data.data.results,
-        loading: false,
-      });
-    });
+    this.props.getId(this.props.match.params.characterId);
   }
 
   render(): JSX.Element {
     return (
       <Container className="container">
         <Header />
-        <ComicsList loading={this.state.loading} comics={this.state.comics} />
+        <ComicsList loading={this.props.state.loading} comics={this.props.state.comics} />
       </Container>
     );
   }
 }
 
-export default CharacterComics;
+const mapStateToProps = (state: any) => {
+  return {
+    state: state.comicsReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    getId: (characterId: any) => dispatch(loadComics(characterId)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterComics);

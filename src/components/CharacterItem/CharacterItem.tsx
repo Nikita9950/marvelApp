@@ -22,7 +22,7 @@ function CharacterItem(props: IProps): JSX.Element {
     <li className="character-item">
       <Grid container justifyContent="space-around" spacing={1} alignItems="center">
         <img className="character-item__img" src={imgSrc} alt={name} />
-        <div className="character-item__decription">
+        <div className="character-item__description">
           <p className="character-item__char-name">{name}</p>
         </div>
         <Link onClick={scrollToTop} className="character-item__link" to={`/comics/${id}`}>

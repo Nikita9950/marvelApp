@@ -1,18 +1,18 @@
 import React from 'react';
 import CharacterItem from '../CharacterItem/CharacterItem';
-import { ICharacter } from '../HomeSearch/HomeSearch';
 import './CharacterList.css';
 
-interface IProps {
-  items: Array<ICharacter>;
-}
+// interface IProps {
+//   items: Array<ICharacter>;
+//   error: unknown;
+// }
 
-function CharacterList(props: IProps): JSX.Element {
-  const { items } = props;
-  if (items.length) {
+function CharacterList(props: any): JSX.Element {
+  const { items, error } = props;
+  if (items.length !== 0 || error) {
     return (
       <ul>
-        {items.map((item: ICharacter) => {
+        {items.map((item: any) => {
           const imgSrc = `${item.thumbnail.path}.${item.thumbnail.extension}`;
           return <CharacterItem name={item.name} imgSrc={imgSrc} key={item.id} id={item.id} />;
         })}
