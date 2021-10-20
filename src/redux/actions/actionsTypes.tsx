@@ -4,3 +4,7 @@ export const ERROR_GET_CHARACTERS = 'ERROR_GET_CHARACTERS';
 export const LOAD_COMICS = 'LOAD_COMICS';
 export const GET_COMICS = 'GET_COMICS';
 export const ERROR_GET_COMICS = 'ERROR_GET_COMICS';
+
+
+
+

@@ -38,7 +38,7 @@
   },
   "prettier": {
     "singleQuote": true,
-    "printWidth": 100
+    "printWidth": 150
   },
   "eslintConfig": {
     "extends": [

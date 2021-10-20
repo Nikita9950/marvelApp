@@ -7,10 +7,24 @@ import Container from '@material-ui/core/Container';
 import { Spinner } from '../Spinner/Spinner';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { loadCharacters } from '../../redux/actions/charactersActions';
+import { ICharacter } from '../../interfaces';
+import { IRootState } from '../../redux/reducers/index';
 
-class Home extends React.Component<any, any> {
-  constructor(props: any) {
+interface IHomeSearchProps extends RouteComponentProps {
+  characters: Array<ICharacter>;
+  loading: boolean;
+  error: null | string;
+  getQueryName: (characterQueryName?: string) => void;
+}
+
+interface IHomeSearchState {
+  inputValue: string;
+}
+
+class Home extends React.Component<IHomeSearchProps, IHomeSearchState> {
+  constructor(props: IHomeSearchProps) {
     super(props);
     this.state = {
       inputValue: '',
@@ -60,34 +74,38 @@ class Home extends React.Component<any, any> {
   }
 
   error() {
-    if (this.props.state.error) {
-      return <p className="search-error">{this.props.state.error}</p>;
+    if (this.props.error) {
+      return <p className="search-error">{this.props.error}</p>;
     }
   }
 
   render(): JSX.Element {
+    const { characters, loading, error } = this.props;
+
     return (
       <Container className="container">
         <Header />
         <SearchBar value={this.state.inputValue} click={this.search} onChange={this.setAddress} />
         {this.error()}
-        {this.props.state.loading ? <Spinner /> : null}
-        <CharacterList items={this.props.state.characters} error={this.props.state.error} />
+        {loading ? <Spinner /> : null}
+        <CharacterList items={characters} error={error} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IRootState) => {
   return {
-    state: state.charactersReducer,
+    characters: state.charactersReducer.characters,
+    loading: state.charactersReducer.loading,
+    error: state.charactersReducer.error,
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     getQueryName: (characterQueryName: string) => dispatch(loadCharacters(characterQueryName)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home as any);

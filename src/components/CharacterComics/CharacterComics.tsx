@@ -1,29 +1,32 @@
 import React from 'react';
-// import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import Header from '../Header/Header';
 import Container from '@material-ui/core/Container';
 import './CharacterComics.css';
 import { connect } from 'react-redux';
 import ComicsList from '../ComicsList/ComicsList';
 import { loadComics } from '../../redux/actions/comicsActions';
+import { IComics } from '../../interfaces';
+import { IRootState } from '../../redux/reducers/index';
+import { Dispatch } from 'redux';
 
-export interface IComics {
-  title: string;
-  id: string;
-  description: string;
-  thumbnail: {
-    path: string;
-    extension: string;
-  };
+interface ICharacterId {
+  characterId: string;
+}
+
+interface ICharacterComicsProps extends RouteComponentProps<ICharacterId> {
+  comics: Array<IComics>;
+  loading: boolean;
+  error: null | string;
+  getId: (characterId: string) => void;
 }
 
 interface ICharacterComicsState {
   characterId: string;
 }
 
-
-class CharacterComics extends React.Component<any, ICharacterComicsState> {
-  constructor(props: any) {
+class CharacterComics extends React.Component<ICharacterComicsProps, ICharacterComicsState> {
+  constructor(props: ICharacterComicsProps) {
     super(props);
   }
 
@@ -32,24 +35,28 @@ class CharacterComics extends React.Component<any, ICharacterComicsState> {
   }
 
   render(): JSX.Element {
+    const { comics, loading } = this.props;
+
     return (
       <Container className="container">
         <Header />
-        <ComicsList loading={this.props.state.loading} comics={this.props.state.comics} />
+        <ComicsList loading={loading} comics={comics} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: IRootState) => {
   return {
-    state: state.comicsReducer,
+    comics: state.comicsReducer.comics,
+    loading: state.comicsReducer.loading,
+    error: state.comicsReducer.error,
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    getId: (characterId: any) => dispatch(loadComics(characterId)),
+    getId: (characterId: string) => dispatch(loadComics(characterId)),
   };
 };
 

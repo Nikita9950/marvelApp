@@ -1,18 +1,19 @@
 import React from 'react';
 import CharacterItem from '../CharacterItem/CharacterItem';
 import './CharacterList.css';
+import { ICharacter } from '../../interfaces';
 
-// interface IProps {
-//   items: Array<ICharacter>;
-//   error: unknown;
-// }
+interface IProps {
+  items: Array<ICharacter>;
+  error: null | string;
+}
 
-function CharacterList(props: any): JSX.Element {
+function CharacterList(props: IProps): JSX.Element {
   const { items, error } = props;
   if (items.length !== 0 || error) {
     return (
       <ul>
-        {items.map((item: any) => {
+        {items.map((item: ICharacter) => {
           const imgSrc = `${item.thumbnail.path}.${item.thumbnail.extension}`;
           return <CharacterItem name={item.name} imgSrc={imgSrc} key={item.id} id={item.id} />;
         })}

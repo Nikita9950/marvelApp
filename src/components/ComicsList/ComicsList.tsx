@@ -2,7 +2,7 @@ import React from 'react';
 import './ComicsList.css';
 import { Spinner } from '../Spinner/Spinner';
 import { ComicsItem } from '../ComicsItem/ComicsItem';
-import { IComics } from '../CharacterComics/CharacterComics';
+import { IComics } from '../../interfaces';
 
 interface IProps {
   loading: boolean;
@@ -20,22 +20,13 @@ function ComicsList(props: IProps): JSX.Element {
             {comics.map((item: IComics) => {
               const imgSrc = `${item.thumbnail.path}.${item.thumbnail.extension}`;
 
-              return (
-                <ComicsItem
-                  title={item.title}
-                  images={imgSrc}
-                  key={item.id}
-                  description={item.description}
-                />
-              );
+              return <ComicsItem title={item.title} images={imgSrc} key={item.id} description={item.description} />;
             })}
           </ul>
         </>
       );
     } else {
-      return (
-        <p className="сharacter-сomics__error">Sorry, but this character is not in the comics</p>
-      );
+      return <p className="сharacter-сomics__error">Sorry, but this character is not in the comics</p>;
     }
   }
   const { loading } = props;

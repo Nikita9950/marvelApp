@@ -1,31 +1,32 @@
+import { AxiosResponse } from 'axios';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getCharacter, getComicsByCharacter } from '../../api/api';
-import { getCharacters, errorGetCharacters } from '../actions/charactersActions';
-import { getComics, errorGetComics } from '../actions/comicsActions';
+import { getCharacters, errorGetCharacters, ILoadCharacters } from '../actions/charactersActions';
+import { getComics, errorGetComics, IGetComics } from '../actions/comicsActions';
 
-export function* sagaHeroesWorker(action: any): any {
+export function* sagaHeroesWorker(action: ILoadCharacters) {
   try {
-    const data: any = yield call(getCharacter, action.payload);
-    yield put(getCharacters(data));
+    const data: AxiosResponse = yield call(getCharacter, action.payload);
+    yield put(getCharacters(data.data.data.results));
   } catch (error) {
-    yield put(errorGetCharacters(error));
+    yield put(errorGetCharacters('Request Error'));
   }
 }
 
-export function* sagaComicsWorker(action: any): any {
+export function* sagaComicsWorker(action: IGetComics) {
   try {
-    const data: any = yield call(getComicsByCharacter, action.payload);
-    yield put(getComics(data));
+    const data: AxiosResponse = yield call(getComicsByCharacter, action.payload);
+    yield put(getComics(data.data.data.results));
   } catch (error) {
-    yield put(errorGetComics(error));
+    yield put(errorGetComics('Request Error'));
   }
 }
 
-export function* sagaWatcher() {
+export function* sagaWatcher(): Generator {
   yield takeEvery('LOAD_CHARACTERS', sagaHeroesWorker);
   yield takeEvery('LOAD_COMICS', sagaComicsWorker);
 }
 
-export function* rootSaga() {
+export function* rootSaga(): Generator {
   yield sagaWatcher();
 }

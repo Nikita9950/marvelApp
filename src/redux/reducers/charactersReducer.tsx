@@ -1,10 +1,19 @@
+import { ICharacter } from '../../interfaces';
+import { CharactersAction } from '../actions/charactersActions';
+
+export interface ICharacterState {
+  characters: Array<ICharacter>;
+  loading: boolean;
+  error: null | string;
+}
+
 const initialState = {
   characters: [],
   loading: false,
   error: null,
 };
 
-export const charactersReducer = (state = initialState, action: any) => {
+export const charactersReducer = (state: ICharacterState = initialState, action: CharactersAction): ICharacterState => {
   switch (action.type) {
     case 'LOAD_CHARACTERS': {
       return {
@@ -18,7 +27,7 @@ export const charactersReducer = (state = initialState, action: any) => {
     case 'GET_CHARACTERS': {
       return {
         ...state,
-        characters: action.payload.data.data.results,
+        characters: action.payload,
         loading: false,
         error: null,
       };

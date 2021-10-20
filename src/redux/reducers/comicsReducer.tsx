@@ -1,10 +1,19 @@
+import { ComicsAction } from '../actions/comicsActions';
+import { IComics } from '../../interfaces';
+
+export interface IComicsState {
+  comics: Array<IComics>;
+  loading: boolean;
+  error: null | string;
+}
+
 const initialState = {
   comics: [],
   loading: false,
   error: null,
 };
 
-export const comicsReducer = (state = initialState, action: any) => {
+export const comicsReducer = (state: IComicsState = initialState, action: ComicsAction): IComicsState => {
   switch (action.type) {
     case 'LOAD_COMICS': {
       return {
@@ -18,7 +27,7 @@ export const comicsReducer = (state = initialState, action: any) => {
     case 'GET_COMICS': {
       return {
         ...state,
-        comics: action.payload.data.data.results,
+        comics: action.payload,
         loading: false,
         error: null,
       };
