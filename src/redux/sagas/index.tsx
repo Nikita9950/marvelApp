@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getCharacter, getComicsByCharacter } from '../../api/api';
 import { getCharacters, errorGetCharacters, ILoadCharacters } from '../actions/charactersActions';
-import { getComics, errorGetComics, IGetComics } from '../actions/comicsActions';
+import { getComics, errorGetComics, ILoadComics } from '../actions/comicsActions';
 
 export function* sagaHeroesWorker(action: ILoadCharacters) {
   try {
@@ -13,7 +13,7 @@ export function* sagaHeroesWorker(action: ILoadCharacters) {
   }
 }
 
-export function* sagaComicsWorker(action: IGetComics) {
+export function* sagaComicsWorker(action: ILoadComics) {
   try {
     const data: AxiosResponse = yield call(getComicsByCharacter, action.payload);
     yield put(getComics(data.data.data.results));
