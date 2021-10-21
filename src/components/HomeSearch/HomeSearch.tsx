@@ -16,7 +16,7 @@ interface IHomeSearchProps extends RouteComponentProps {
   characters: Array<ICharacter>;
   loading: boolean;
   error: null | string;
-  getQueryName: (characterQueryName?: string) => void;
+  loadCharacters: (characterQueryName?: string) => void;
 }
 
 interface IHomeSearchState {
@@ -36,12 +36,12 @@ class Home extends React.Component<IHomeSearchProps, IHomeSearchState> {
   getChar(): void {
     const characterQueryName = new URLSearchParams(this.props.location.search).get('name');
     if (characterQueryName) {
-      this.props.getQueryName(characterQueryName);
+      this.props.loadCharacters(characterQueryName);
       this.setState({
         inputValue: characterQueryName,
       });
     } else {
-      this.props.getQueryName();
+      this.props.loadCharacters();
       this.setState({
         inputValue: '',
       });
@@ -73,7 +73,7 @@ class Home extends React.Component<IHomeSearchProps, IHomeSearchState> {
     }
   }
 
-  error() {
+  displayError() {
     if (this.props.error) {
       return <p className="search-error">{this.props.error}</p>;
     }
@@ -86,7 +86,7 @@ class Home extends React.Component<IHomeSearchProps, IHomeSearchState> {
       <Container className="container">
         <Header />
         <SearchBar value={this.state.inputValue} click={this.search} onChange={this.setAddress} />
-        {this.error()}
+        {this.displayError()}
         {loading ? <Spinner /> : null}
         <CharacterList items={characters} error={error} />
       </Container>
@@ -104,7 +104,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    getQueryName: (characterQueryName: string) => dispatch(loadCharacters(characterQueryName)),
+    loadCharacters: (characterQueryName: string) => dispatch(loadCharacters(characterQueryName)),
   };
 };
 

@@ -10,7 +10,7 @@ interface IProps {
 
 function CharacterList(props: IProps): JSX.Element {
   const { items, error } = props;
-  if (items.length !== 0 || error) {
+  if (items.length || error) {
     return (
       <ul>
         {items.map((item: ICharacter) => {

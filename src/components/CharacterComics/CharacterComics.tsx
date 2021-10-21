@@ -18,7 +18,7 @@ interface ICharacterComicsProps extends RouteComponentProps<ICharacterId> {
   comics: Array<IComics>;
   loading: boolean;
   error: null | string;
-  getId: (characterId: string) => void;
+  loadComics: (characterId: string) => void;
 }
 
 interface ICharacterComicsState {
@@ -31,7 +31,7 @@ class CharacterComics extends React.Component<ICharacterComicsProps, ICharacterC
   }
 
   componentDidMount(): void {
-    this.props.getId(this.props.match.params.characterId);
+    this.props.loadComics(this.props.match.params.characterId);
   }
 
   render(): JSX.Element {
@@ -56,7 +56,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    getId: (characterId: string) => dispatch(loadComics(characterId)),
+    loadComics: (characterId: string) => dispatch(loadComics(characterId)),
   };
 };
 
