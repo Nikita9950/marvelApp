@@ -1,5 +1,6 @@
 import { ComicsAction } from '../actions/comicsActions';
 import { IComics } from '../../interfaces';
+import { ActionTypesComics } from '../actions/actionsTypes';
 
 export interface IComicsState {
   comics: Array<IComics>;
@@ -15,7 +16,7 @@ const initialState = {
 
 export const comicsReducer = (state: IComicsState = initialState, action: ComicsAction): IComicsState => {
   switch (action.type) {
-    case 'LOAD_COMICS': {
+    case ActionTypesComics.LOAD_COMICS: {
       return {
         ...state,
         comics: [],
@@ -24,7 +25,7 @@ export const comicsReducer = (state: IComicsState = initialState, action: Comics
       };
     }
 
-    case 'GET_COMICS': {
+    case ActionTypesComics.GET_COMICS: {
       return {
         ...state,
         comics: action.payload,
@@ -33,7 +34,7 @@ export const comicsReducer = (state: IComicsState = initialState, action: Comics
       };
     }
 
-    case 'ERROR_GET_COMICS': {
+    case ActionTypesComics.ERROR_GET_COMICS: {
       return {
         ...state,
         comics: [],

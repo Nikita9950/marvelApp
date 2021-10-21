@@ -1,18 +1,18 @@
-import { LOAD_COMICS, GET_COMICS, ERROR_GET_COMICS } from './actionsTypes';
+import { ActionTypesComics } from './actionsTypes';
 import { IComics } from '../../interfaces';
 
 export interface ILoadComics {
-  type: string;
+  type: ActionTypesComics.LOAD_COMICS;
   payload: string;
 }
 
 export interface IGetComics {
-  type: string;
-  payload: any;
+  type: ActionTypesComics.GET_COMICS;
+  payload: Array<IComics>;
 }
 
 export interface IErrorGetComics {
-  type: string;
+  type: ActionTypesComics.ERROR_GET_COMICS;
   payload: string;
 }
 
@@ -20,21 +20,21 @@ export type ComicsAction = ILoadComics | IGetComics | IErrorGetComics;
 
 export const loadComics = (characterId: string): ILoadComics => {
   return {
-    type: LOAD_COMICS,
+    type: ActionTypesComics.LOAD_COMICS,
     payload: characterId,
   };
 };
 
 export const getComics = (data: Array<IComics>): IGetComics => {
   return {
-    type: GET_COMICS,
+    type: ActionTypesComics.GET_COMICS,
     payload: data,
   };
 };
 
 export const errorGetComics = (error: string): IErrorGetComics => {
   return {
-    type: ERROR_GET_COMICS,
+    type: ActionTypesComics.ERROR_GET_COMICS,
     payload: error,
   };
 };

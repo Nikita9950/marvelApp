@@ -1,5 +1,6 @@
 import { ICharacter } from '../../interfaces';
 import { CharactersAction } from '../actions/charactersActions';
+import { ActionTypesCharacters } from '../actions/actionsTypes';
 
 export interface ICharacterState {
   characters: Array<ICharacter>;
@@ -15,7 +16,7 @@ const initialState = {
 
 export const charactersReducer = (state: ICharacterState = initialState, action: CharactersAction): ICharacterState => {
   switch (action.type) {
-    case 'LOAD_CHARACTERS': {
+    case ActionTypesCharacters.LOAD_CHARACTERS: {
       return {
         ...state,
         characters: [],
@@ -24,7 +25,7 @@ export const charactersReducer = (state: ICharacterState = initialState, action:
       };
     }
 
-    case 'GET_CHARACTERS': {
+    case ActionTypesCharacters.GET_CHARACTERS: {
       return {
         ...state,
         characters: action.payload,
@@ -33,7 +34,7 @@ export const charactersReducer = (state: ICharacterState = initialState, action:
       };
     }
 
-    case 'ERROR_GET_CHARACTERS': {
+    case ActionTypesCharacters.ERROR_GET_CHARACTERS: {
       return {
         ...state,
         characters: [],
