@@ -1,61 +1,63 @@
 import React from 'react';
-import { getComicsByCharacter } from '../../api/api';
 import { RouteComponentProps } from 'react-router';
 import Header from '../Header/Header';
 import Container from '@material-ui/core/Container';
 import './CharacterComics.css';
+import { connect } from 'react-redux';
 import ComicsList from '../ComicsList/ComicsList';
+import { loadComics } from '../../redux/actions/comicsActions';
+import { IComics } from '../../interfaces';
+import { IRootState } from '../../redux/reducers/index';
+import { Dispatch } from 'redux';
 
-export interface IComics {
-  title: string;
-  id: string;
-  description: string;
-  thumbnail: {
-    path: string;
-    extension: string;
-  };
+interface ICharacterId {
+  characterId: string;
+}
+
+interface ICharacterComicsProps extends RouteComponentProps<ICharacterId> {
+  comics: Array<IComics>;
+  loading: boolean;
+  error: null | string;
+  loadComics: (characterId: string) => void;
 }
 
 interface ICharacterComicsState {
   characterId: string;
-  comics: Array<IComics>;
-  loading: boolean;
 }
 
-interface MatchParams {
-  characterId: string;
-}
-
-class CharacterComics extends React.Component<
-  RouteComponentProps<MatchParams>,
-  ICharacterComicsState
-> {
-  constructor(props: RouteComponentProps<MatchParams>) {
+class CharacterComics extends React.Component<ICharacterComicsProps, ICharacterComicsState> {
+  constructor(props: ICharacterComicsProps) {
     super(props);
-    this.state = {
-      characterId: props.match.params.characterId,
-      comics: [],
-      loading: true,
-    };
   }
 
   componentDidMount(): void {
-    getComicsByCharacter(this.state.characterId).then((res) => {
-      this.setState({
-        comics: res.data.data.results,
-        loading: false,
-      });
-    });
+    this.props.loadComics(this.props.match.params.characterId);
   }
 
   render(): JSX.Element {
+    const { comics, loading } = this.props;
+
     return (
       <Container className="container">
         <Header />
-        <ComicsList loading={this.state.loading} comics={this.state.comics} />
+        <ComicsList loading={loading} comics={comics} />
       </Container>
     );
   }
 }
 
-export default CharacterComics;
+const mapStateToProps = (state: IRootState) => {
+  return {
+    comics: state.comicsReducer.comics,
+    loading: state.comicsReducer.loading,
+    error: state.comicsReducer.error,
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    loadComics: (characterId: string) => dispatch(loadComics(characterId)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterComics);

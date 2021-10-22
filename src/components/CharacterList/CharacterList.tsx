@@ -1,15 +1,16 @@
 import React from 'react';
 import CharacterItem from '../CharacterItem/CharacterItem';
-import { ICharacter } from '../HomeSearch/HomeSearch';
 import './CharacterList.css';
+import { ICharacter } from '../../interfaces';
 
 interface IProps {
   items: Array<ICharacter>;
+  error: null | string;
 }
 
 function CharacterList(props: IProps): JSX.Element {
-  const { items } = props;
-  if (items.length) {
+  const { items, error } = props;
+  if (items.length || error) {
     return (
       <ul>
         {items.map((item: ICharacter) => {
