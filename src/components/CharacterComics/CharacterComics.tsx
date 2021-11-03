@@ -18,7 +18,7 @@ function CharacterComics(): JSX.Element {
   const match: ICharacterId = useParams();
 
   useEffect(() => {
-    dispatch(loadComics(match.characterId));
+    dispatch(loadComics(2, match.characterId));
   }, []);
 
   return (

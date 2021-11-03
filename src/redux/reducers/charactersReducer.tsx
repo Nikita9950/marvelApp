@@ -6,12 +6,14 @@ export interface ICharacterState {
   characters: Array<ICharacter>;
   loading: boolean;
   error: null | string;
+  totalCharacter: number;
 }
 
 const initialState = {
   characters: [],
   loading: false,
   error: null,
+  totalCharacter: 0,
 };
 
 export const charactersReducer = (state: ICharacterState = initialState, action: CharactersAction): ICharacterState => {

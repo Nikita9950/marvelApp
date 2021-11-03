@@ -3,7 +3,10 @@ import { IComics } from '../../interfaces';
 
 export interface ILoadComics {
   type: ActionTypesComics.LOAD_COMICS;
-  payload: string;
+  payload: {
+    currentPage: number;
+    characterId: string;
+  };
 }
 
 export interface IGetComics {
@@ -18,10 +21,13 @@ export interface IErrorGetComics {
 
 export type ComicsAction = ILoadComics | IGetComics | IErrorGetComics;
 
-export const loadComics = (characterId: string): ILoadComics => {
+export const loadComics = (currentPage: number, characterId: string): ILoadComics => {
   return {
     type: ActionTypesComics.LOAD_COMICS,
-    payload: characterId,
+    payload: {
+      currentPage: currentPage,
+      characterId: characterId,
+    },
   };
 };
 
