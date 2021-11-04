@@ -36,7 +36,9 @@ button.search-button {
   background-color: #8a1d20;
 }
 
-/* .search-error {
-  padding: 100px;
-  font-size: 32px;
-} */
+
+.pagination {
+  padding: 30px 0;
+  display: flex;
+  justify-content: center;
+}

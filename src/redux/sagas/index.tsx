@@ -7,7 +7,8 @@ import { getComics, errorGetComics, ILoadComics } from '../actions/comicsActions
 export function* sagaHeroesWorker(action: ILoadCharacters) {
   try {
     const data: AxiosResponse = yield call(getCharacter, action.payload.currentPage, action.payload.characterQueryName);
-    yield put(getCharacters(data.data.data.results));
+    yield put(getCharacters(data.data.data));
+    console.log(data.data.data);
   } catch (error) {
     yield put(errorGetCharacters('Request Error'));
   }

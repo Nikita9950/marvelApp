@@ -30,7 +30,8 @@ export const charactersReducer = (state: ICharacterState = initialState, action:
     case ActionTypesCharacters.GET_CHARACTERS: {
       return {
         ...state,
-        characters: action.payload,
+        characters: action.payload.characters,
+        totalCharacter: action.payload.totalCharacter,
         loading: false,
         error: null,
       };

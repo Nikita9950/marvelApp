@@ -11,12 +11,23 @@ export interface ILoadCharacters {
 
 export interface IGetCharacters {
   type: ActionTypesCharacters.GET_CHARACTERS;
-  payload: Array<ICharacter>;
+  payload: {
+    characters: Array<ICharacter>;
+    totalCharacter: number;
+  };
 }
 
 export interface IErrorGetCharacters {
   type: ActionTypesCharacters.ERROR_GET_CHARACTERS;
   payload: string;
+}
+
+interface IGetCharactersData {
+  count: number;
+  limit: number;
+  offset: number;
+  results: Array<ICharacter>;
+  total: number;
 }
 
 export type CharactersAction = ILoadCharacters | IGetCharacters | IErrorGetCharacters;
@@ -31,10 +42,13 @@ export const loadCharacters = (currentPage: number, characterQueryName?: string 
   };
 };
 
-export const getCharacters = (characters: Array<ICharacter>): IGetCharacters => {
+export const getCharacters = (data: IGetCharactersData): IGetCharacters => {
   return {
     type: ActionTypesCharacters.GET_CHARACTERS,
-    payload: characters,
+    payload: {
+      characters: data.results,
+      totalCharacter: data.total,
+    },
   };
 };
 

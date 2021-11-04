@@ -4,22 +4,20 @@ import CharacterList from '../CharacterList/CharacterList';
 import { useHistory, useLocation } from 'react-router';
 import './HomeSearch.css';
 import Container from '@material-ui/core/Container';
-import Pagination from '@material-ui/core/Pagination';
 import { Spinner } from '../Spinner/Spinner';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadCharacters } from '../../redux/actions/charactersActions';
 import { IRootState } from '../../redux/reducers/index';
+import { PaginationComponent } from '../PaginationComponent/PaginationComponent';
 
 function Home(): JSX.Element {
   let [inputValue, setInputValue] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { characters, loading, error } = useSelector((state: IRootState) => state.charactersReducer);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalCharacter, setTotalCharacter] = useState(0);
+  const { characters, loading, error, totalCharacter } = useSelector((state: IRootState) => state.charactersReducer);
 
   const getChar = (): void => {
     const characterQueryName = new URLSearchParams(location.search).get('name');
@@ -43,7 +41,6 @@ function Home(): JSX.Element {
 
   useEffect(() => {
     getChar();
-    setTotalCharacter(100);
   }, [location.search]);
 
   const setAddress = (event: React.SyntheticEvent): void => {
@@ -62,7 +59,7 @@ function Home(): JSX.Element {
     }
   };
 
-  const paginate = (page: any): any => {
+  const paginate = (page: number): void => {
     const characterQueryName = new URLSearchParams(location.search).get('name');
     setCurrentPage(page);
     if (characterQueryName) {
@@ -70,6 +67,10 @@ function Home(): JSX.Element {
     } else {
       history.push(page === 1 ? '' : `?page=${page}`);
     }
+  };
+
+  const paginateHandleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    paginate(page);
   };
 
   const displayError = () => {
@@ -83,14 +84,7 @@ function Home(): JSX.Element {
       {error ? displayError() : null}
       {loading ? <Spinner /> : null}
       <CharacterList items={characters} error={error} />
-      <Pagination
-        onChange={(event, page) => {
-          paginate(page);
-        }}
-        color="secondary"
-        page={currentPage}
-        count={Math.ceil(totalCharacter / 10)}
-      />
+      <PaginationComponent paginateHandleChange={paginateHandleChange} currentPage={currentPage} count={Math.ceil(totalCharacter / 10)} />
     </Container>
   );
 }
