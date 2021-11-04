@@ -3,7 +3,7 @@ import { ActionTypesCharacters } from '../actions/actionsTypes';
 
 export interface ILoadCharacters {
   type: ActionTypesCharacters.LOAD_CHARACTERS;
-  payload: string | undefined;
+  payload: string | null;
 }
 
 export interface IGetCharacters {
@@ -18,7 +18,7 @@ export interface IErrorGetCharacters {
 
 export type CharactersAction = ILoadCharacters | IGetCharacters | IErrorGetCharacters;
 
-export const loadCharacters = (characterQueryName?: string | undefined): ILoadCharacters => {
+export const loadCharacters = (characterQueryName: string | null): ILoadCharacters => {
   return {
     type: ActionTypesCharacters.LOAD_CHARACTERS,
     payload: characterQueryName,

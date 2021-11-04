@@ -25,7 +25,7 @@ function Home(): JSX.Element {
         return (inputValue = characterQueryName);
       });
     } else {
-      dispatch(loadCharacters());
+      dispatch(loadCharacters(null));
       setInputValue((): string => {
         return (inputValue = '');
       });
