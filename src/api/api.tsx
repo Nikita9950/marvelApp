@@ -3,10 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 const { REACT_APP_API_KEY, REACT_APP_API_HASH } = process.env;
 const URL_BASE = 'http://gateway.marvel.com/v1/public/';
 
-export async function getResourse(
-  url: string,
-  characterQueryName?: string
-): Promise<AxiosResponse> {
+export async function getResourse(url: string, characterQueryName?: string | null): Promise<AxiosResponse> {
   const res = await axios.get(`${URL_BASE}${url}`, {
     params: {
       apikey: REACT_APP_API_KEY,
@@ -23,7 +20,7 @@ export async function getResourse(
   }
 }
 
-export async function getCharacter(characterQueryName?: string): Promise<AxiosResponse> {
+export async function getCharacter(characterQueryName: string | null): Promise<AxiosResponse> {
   return getResourse('characters?', characterQueryName);
 }
 
