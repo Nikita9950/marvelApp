@@ -10,7 +10,7 @@ export async function getResourse(url: string, offset: number, characterQueryNam
       hash: REACT_APP_API_HASH,
       ts: 1,
       offset: offset,
-      limit: 10,
+      limit: 8,
       nameStartsWith: characterQueryName,
     },
   });
